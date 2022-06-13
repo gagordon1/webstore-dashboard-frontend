@@ -19,12 +19,16 @@ function App() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const updateOrders = async () =>{
+    axios.get(GET_ORDERS_ENDPOINT)
+    .then(r => {
+      console.log(r);
+      setOrders(r.data);
+    });
+  }
+
   useEffect(() => {
-      axios.get(GET_ORDERS_ENDPOINT)
-      .then(r => {
-        console.log(r);
-        setOrders(r.data);
-      });
+      updateOrders();
   }, [setOrders]);
 
   return (
@@ -36,6 +40,7 @@ function App() {
           key={order.id}
           order={order}
           setLoading={setLoading}
+          updateOrders={updateOrders}
       />)}
 
     </AppContainer>

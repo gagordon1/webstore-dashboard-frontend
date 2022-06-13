@@ -15,7 +15,7 @@ const ShippingDataContainer = styled.div`
   display : grid;
   grid-gap: 1rem;
   grid-template-columns: 1fr 1fr;
-  justify : left;
+  justify-items: start;
 
 `
 
@@ -76,6 +76,7 @@ export default function OrderTile (props) {
       console.log(error);
     }
     finally{
+      props.updateOrders();
       props.setLoading(false);
     }
 
@@ -91,14 +92,15 @@ export default function OrderTile (props) {
       console.log(error);
     }
     finally{
+      props.updateOrders();
       props.setLoading(false);
     }
 
   }
 
   useEffect(() => {
-    const color = getColor(props)
-    setColor(color);
+    const col = getColor(props)
+    setColor(col);
   }, [props, setColor]);
 
   const OrderTileContainer = styled.div`
@@ -132,9 +134,9 @@ export default function OrderTile (props) {
         <OrderDataItem> Cancelled: {props.order.cancelled? "yes" : "no"}</OrderDataItem>
       </StatusDataContainer>
       <StatusDataContainer>
-        <Button disabled={props.order.shipped}
+        <Button disabled={props.order.shipped || props.order.cancelled}
               onClick={() => cancelOrder(props.order.id)} title={"Cancel"}/>
-        <Button disabled={props.order.cancelled}
+        <Button disabled={props.order.cancelled || props.order.shipped}
               onClick={() => shipOrder(props.order.id)} title={"Fulfill"}/>
       </StatusDataContainer>
     </OrderTileContainer>
