@@ -1,4 +1,5 @@
 import OrderTile from './components/OrderTile';
+import Button from './components/Button';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GET_ORDERS_ENDPOINT } from './endpoints';
@@ -13,6 +14,24 @@ const AppContainer = styled.div`
   width:100%;
   text-align : center;
 
+`
+async function refreshProducts(){
+  console.log("REFRESH PRODUCTS NOT IMPLEMENTED")
+}
+
+const RefreshProductButton = styled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  margin : auto;
+  width: 200px;
+  height: 60px;
+  background: #F4F4F4;
+  border :none;
+  border-radius: 7px;
+  &:hover {
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  }
 `
 
 function App() {
@@ -35,13 +54,20 @@ function App() {
     <AppContainer>
       {orders.length === 0? <h2> No orders. </h2> : null}
       {loading? <h2>Loading...</h2> : null}
-      {orders.map(order =>
+      {orders.sort(function(a,b){return b.created-a.created})
+        .map(order =>
         <OrderTile
           key={order.id}
           order={order}
           setLoading={setLoading}
           updateOrders={updateOrders}
       />)}
+      <RefreshProductButton
+        disabled={false}
+        onClick={refreshProducts}
+        >
+        {"Refresh Products"}
+      </RefreshProductButton>
 
     </AppContainer>
   );

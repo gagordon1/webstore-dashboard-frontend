@@ -13,12 +13,11 @@ const OrderDataItem = styled.p`
 const ShippingDataContainer = styled.div`
   margin : auto;
   display : grid;
-  grid-gap: 1rem;
-  grid-template-columns: 1fr 1fr;
+  grid-gap : 4px;
+  grid-template-columns: 1fr;
   justify-items: start;
 
 `
-
 const StatusDataContainer = styled.div`
   margin : auto;
   display : grid;
@@ -56,6 +55,10 @@ const getColor = (props) =>{
   else{
     return "FFFFFF"
   }
+}
+
+const calculateAmountPaid = (retail, shipping, taxRate) =>{
+  return ((Number(retail) + Number(shipping)) * (1+ Number(taxRate)).toFixed(2))
 }
 
 
@@ -115,11 +118,21 @@ export default function OrderTile (props) {
     border-radius: 7px;
 
   `
+  const getEasternTime = (timestamp) => {
+    return new Date(timestamp*1000).toLocaleString('en-US', {
+    timeZone: 'America/New_York',
+  });
+  }
   return(
     <OrderTileContainer>
       <OrderIdContainer>
         <OrderId> {props.order.id}</OrderId>
       </OrderIdContainer>
+      <StatusDataContainer>
+        <OrderDataItem> Amount Received: ${calculateAmountPaid(props.order.retailPrice,
+          props.order.customerShippingRate, props.order.customerTaxRate)} </OrderDataItem>
+        <OrderDataItem> Owed to Printful: ${props.order.myCosts.total}</OrderDataItem>
+      </StatusDataContainer>
       <ShippingDataContainer>
         <OrderDataItem> Name: {props.order.recipient.name} </OrderDataItem>
         <OrderDataItem> Email: {props.order.recipient.email}</OrderDataItem>
@@ -129,6 +142,7 @@ export default function OrderTile (props) {
         <OrderDataItem> Country: {props.order.recipient.country}</OrderDataItem>
       </ShippingDataContainer>
       <StatusDataContainer>
+        <OrderDataItem> Created: {getEasternTime(props.order.created)} ET</OrderDataItem>
         <OrderDataItem> Paid: {props.order.paymentComplete? "yes" : "no"}</OrderDataItem>
         <OrderDataItem> Shipped: {props.order.shipped? "yes" : "no"}</OrderDataItem>
         <OrderDataItem> Cancelled: {props.order.cancelled? "yes" : "no"}</OrderDataItem>
