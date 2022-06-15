@@ -41,6 +41,19 @@ const OrderId = styled.h3`
 
 
 `
+
+const OrderTileContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height : 150px;
+  width : 80%;
+  margin : auto;
+  margin-top:20px;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 7px;
+  background: #${props => props.color}
+`
+
 const getColor = (props) =>{
   if (props.order.shipped){
     return colors.shipped;
@@ -106,25 +119,14 @@ export default function OrderTile (props) {
     setColor(col);
   }, [props, setColor]);
 
-  const OrderTileContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    height : 150px;
-    width : 80%;
-    background : #${color};
-    margin : auto;
-    margin-top:20px;
-    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 7px;
 
-  `
   const getEasternTime = (timestamp) => {
     return new Date(timestamp*1000).toLocaleString('en-US', {
     timeZone: 'America/New_York',
   });
   }
   return(
-    <OrderTileContainer>
+    <OrderTileContainer color={color}>
       <OrderIdContainer>
         <OrderId> {props.order.id}</OrderId>
       </OrderIdContainer>

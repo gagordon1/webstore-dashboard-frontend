@@ -15,9 +15,9 @@ const AppContainer = styled.div`
   text-align : center;
 
 `
-async function refreshProducts(){
-  console.log("REFRESH PRODUCTS NOT IMPLEMENTED")
-}
+
+//ONLY WORKS WHEN BACKEND DEV SERVER RUNNING ON localhost:8080
+
 
 const RefreshProductButton = styled.button`
   position: fixed;
@@ -27,7 +27,6 @@ const RefreshProductButton = styled.button`
   width: 200px;
   height: 60px;
   background: #F4F4F4;
-  border :none;
   border-radius: 7px;
   &:hover {
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
@@ -37,6 +36,13 @@ const RefreshProductButton = styled.button`
 function App() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  async function refreshProducts(){
+    setLoading(true)
+    const response = await axios.get("http://localhost:8080/updateProducts")
+    console.log(response);
+    setLoading(false)
+  }
 
   const updateOrders = async () =>{
     axios.get(GET_ORDERS_ENDPOINT)
