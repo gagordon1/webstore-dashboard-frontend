@@ -1,5 +1,4 @@
 import OrderTile from './components/OrderTile';
-import Button from './components/Button';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GET_ORDERS_ENDPOINT } from './endpoints';
